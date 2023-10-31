@@ -1,0 +1,24 @@
+[workspace]
+
+members = [
+    "A1/0-intro",
+    "A1/1-basic-syntax",
+    "A1/2-move-semantics",
+    "A2/0-borrowing",
+    "A2/1-error-propagating",
+    "A2/2-slices",
+    "A2/3-error-handling",
+    "A2/4-boxed-data",
+    "A2/5-bonus-ring-buffer",
+    "A3/2-local-storage-vec/",
+    "B/1-my-serde-app",
+    "B/3-fizzbuzz",
+    "D/1-bsn",
+    "D/2-3d-printer",
+    "D/3-config-reader",
+    "E/1-channels",
+    "E/2-chat",
+    "F/1-linked-list",
+    "F/2-execve",
+    "F/3-tagged-union",
+]
