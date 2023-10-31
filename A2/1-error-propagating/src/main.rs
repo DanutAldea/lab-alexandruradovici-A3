@@ -19,32 +19,40 @@ use std::io::{self, BufRead, BufReader, Lines};
 
 //change this into:
 //fn read_lines(filename: &str) -> Result<Lines<BufReader<File>>, io::Error> {
-fn read_lines(filename: &str) -> Lines<BufReader<File>> {
-    let file = File::open(filename).unwrap(); // this can easily fail
-    BufReader::new(file).lines()
+fn read_lines(filename: &str) -> Result<Lines<BufReader<File>>, io::Error> {
+    // use the question mark (?) to return from read_lines if the 
+    // value returned is an Err(...)
+    let file = File::open(filename)?; // this can easily fail
+    // return Ok(...)
+    // this will be handled in the caller (the count_bytes_and_lines function)
+    Ok(BufReader::new(file).lines())
 }
 
 //change this into:
 //fn count_bytes_and_lines(filename: &str) -> Result<(usize, usize, usize), io::Error> {
-fn count_bytes_and_lines(filename: &str) -> (usize, usize, usize) {
-    let lines = read_lines(filename);
+fn count_bytes_and_lines(filename: &str) -> Result<(usize, usize, usize), io::Error> {
+    let lines = read_lines(filename)?;
     let mut line_count = 0;
     let mut word_count = 0;
     let mut byte_count = 0;
     for line in lines {
-        let text = line.unwrap(); // this will usually not fail
+        let text = line?; // this will usually not fail
         line_count += 1;
         word_count += text.split_whitespace().count();
         byte_count += text.len();
     }
 
-    (line_count, word_count, byte_count)
+    // return Ok(...)
+    // this will be handled in the caller (the main function)
+    Ok((line_count, word_count, byte_count))
 }
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     let filename = &args[1];
 
-    let (lines, words, bytes) = count_bytes_and_lines(filename);
-    println!("{filename}: {lines} lines, {words} words, {bytes} bytes");
+    match count_bytes_and_lines(filename) {
+        Ok((lines, words, bytes)) => println!("{filename}: {lines} lines, {words} words, {bytes} bytes"),
+        Err(err) => eprintln!("There was an error while counting the bytes and linnes, {err}")
+    }
 }

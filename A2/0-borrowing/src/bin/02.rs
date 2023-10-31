@@ -1,21 +1,29 @@
 //! You can't change anything except adding or removing references.
 
 fn main() {
-    let data = "Rust is great!".to_string();
+    // declare the variable as mutable to be able to
+    // borrow it mutable
+    let mut data = "Rust is great!".to_string();
 
-    get_char(data);
+    // borrow immuntably data to get_char
+    get_char(&data);
 
-    string_uppercase(&data);
+    // borrow it mutable
+    string_uppercase(&mut data);
 }
 
 // Should not take ownership
-fn get_char(data: String) -> char {
+// it only needs to borrow data, not own it
+fn get_char(data: &String) -> char {
     data.chars().last().unwrap()
 }
 
 // Should take ownership
-fn string_uppercase(mut data: &String) {
-    data = &data.to_uppercase();
+// this function needs a mutable reference (&mut String)
+// instead of a mutable variable (mut data: String)
+fn string_uppercase(data: &mut String) {
+    // modify the mutable borrowed value
+    *data = data.to_uppercase();
 
     println!("{}", data);
 }
